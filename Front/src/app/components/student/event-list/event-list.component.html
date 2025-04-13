@@ -1,0 +1,24 @@
+<div class="container">
+    <h2 class="text-center mt-4">Liste des Événements</h2>
+  
+    <div class="row">
+      <div class="col-md-4 mb-4" *ngFor="let event of events">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text">{{ event.description }}</p>
+            <p><strong>Date :</strong> {{ event.scheduledAt  }}</p>
+  
+           
+  
+            <!-- QR Code -->
+           
+            <button class="btn btn-primary mt-3" (click)="goToReservation(event.eventId)">
+                Réserver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

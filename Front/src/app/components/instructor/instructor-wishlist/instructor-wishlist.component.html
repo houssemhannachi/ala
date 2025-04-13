@@ -1,0 +1,61 @@
+<!-- Page Content -->
+<div class="page-content">
+    <div class="container">
+        <div class="row">    
+            <!-- Sidebar -->
+            <app-instructor-sidebar class="col-xl-3 col-lg-3 theiaStickySidebar"></app-instructor-sidebar>
+            <!-- /Sidebar -->
+
+            <!-- Events Dashboard -->
+            <div class="col-xl-9 col-lg-9">
+                <!-- Dashboard Title -->
+                <div class="dashboard-title">
+                    <h4>Gestion des Événements</h4>
+                </div>
+
+                <!-- Formulaire d'ajout d'un événement -->
+                <div class="add-event-form">
+                    <h5>Ajouter un Événement</h5>
+                    <form (submit)="addEvent(eventTitle.value, eventDescription.value, eventDate.value, eventCapacity.value)">
+                        <input type="text" #eventTitle placeholder="Titre de l'événement" required>
+                        <input type="text" #eventDescription placeholder="Description" required>
+                        <input type="datetime-local" #eventDate required>
+                        <input type="number" #eventCapacity placeholder="Capacité maximale" required> <!-- ✅ Capacité ajoutée -->
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </form>
+                </div>
+
+                <!-- Liste des événements -->
+                <div class="dashboard-title">
+                    <h4>Événements à venir</h4>
+                </div>
+                <div class="table-responsive custom-table">
+                    <table class="table table-nowrap mb-0">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Capacité</th> <!-- ✅ Ajout de la colonne capacité -->
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let event of events">
+                                <td>{{ event.title }}</td>
+                                <td>{{ event.description }}</td>
+                                <td>{{ event.scheduledAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                                <td>{{ event.capacity }}</td> <!-- ✅ Affichage de la capacité -->
+                                <td>
+                                    <button (click)="updateevent(event.eventId)" class="btn btn-primary">Modifier</button>
+                                    <button (click)="deleteEvent(event.eventId)" class="btn btn-danger">Supprimer</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- /col-xl-9 -->
+        </div> <!-- /row -->
+    </div> <!-- /container -->
+</div>
+<!-- /Page Content -->

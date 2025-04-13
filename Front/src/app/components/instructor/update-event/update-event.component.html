@@ -1,0 +1,79 @@
+<!-- Page de mise à jour de l'événement -->
+<div class="page-content">
+    <div class="container">
+      <div class="row">
+  
+        <!-- Formulaire de mise à jour -->
+        <div class="col-lg-8 offset-lg-2">
+          <div class="update-event-form">
+            <h3>Modifier l'événement</h3>
+  
+            <form (ngSubmit)="updateEvent()" #eventForm="ngForm">
+  
+              <!-- Champ Titre -->
+              <div class="form-group">
+                <label for="title">Titre de l'événement</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="title" 
+                  [(ngModel)]="event.title"
+                  name="title" 
+                  required
+                  #title="ngModel"
+                />
+                <div *ngIf="title.invalid && title.touched" class="text-danger">
+                  Le titre est requis.
+                </div>
+              </div>
+  
+              <!-- Champ Description -->
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="description" 
+                  [(ngModel)]="event.description"
+                  name="description" 
+                  required
+                  #description="ngModel"
+                />
+                <div *ngIf="description.invalid && description.touched" class="text-danger">
+                  La description est requise.
+                </div>
+              </div>
+  
+              <!-- Champ Date et Heure -->
+              <div class="form-group">
+                <label for="scheduledAt">Date et Heure</label>
+                <input 
+                  type="datetime-local" 
+                  class="form-control" 
+                  id="scheduledAt" 
+                  [(ngModel)]="eventToUpdate.scheduledAt" 
+                  name="scheduledAt" 
+                  required
+                  #scheduledAt="ngModel"
+                />
+                <div *ngIf="scheduledAt.invalid && scheduledAt.touched" class="text-danger">
+                  La date et l'heure sont requises.
+                </div>
+              </div>
+  
+              <!-- Boutons Mettre à jour et Annuler -->
+              <div class="form-group text-center">
+                <button type="submit" (click)="updateEvent()" class="btn btn-primary" [disabled]="eventForm.invalid"> Mettre à jour </button>
+                <button type="button" (click)="cancel()" class="btn btn-secondary">
+                  Annuler
+                </button>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
