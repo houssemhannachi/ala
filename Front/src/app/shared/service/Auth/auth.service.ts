@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8076';
+  private baseUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 
@@ -33,4 +33,23 @@ export class AuthService {
   resetPassword(token: string, password: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/reset-password?token=${token}`, { password });
   }
+
+  getProfile(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(`${this.baseUrl}/adminuser/get-profile`, {headers});
+  }
+
+  isUserLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    return token!=null;
+  }
+  logOut(): any {
+    if (typeof window !== "undefined") {
+      window.localStorage.clear();
+    }
+  }
+
 }

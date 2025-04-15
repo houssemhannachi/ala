@@ -9,7 +9,7 @@ export interface Event {
   title: string;
   description: string;
   scheduledAt: Date;
-  isFull?: boolean; 
+  isFull?: boolean;
   capacity?: number;  // ✅ Ajout de la capacité
 
 }
@@ -18,7 +18,7 @@ export interface Event {
   providedIn: 'root'
 })
 export class EventService {
-  private apiUrl = 'http://localhost:8076/api/events/admin';
+  private apiUrl = 'http://localhost:8080/api/events/admin';
 
   constructor(private http: HttpClient) {}
   private getAuthHeaders() {
@@ -44,21 +44,21 @@ export class EventService {
   }
 
   deleteEvent(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`); // ✅ Correction
+    return this.http.delete<void>(`${this.apiUrl}/delete-event/${id}`,{ headers: this.getAuthHeaders() }); // ✅ Correction
   }
   /*getEventById(id: number): Observable<Event> {
     const url = `${this.apiUrl}/admin/{id}${id}`;
     return this.http.get<Event>(url);
   }*/
     getEventQRCodeUrl(eventId: number): Observable<string> {
-      return this.http.get(`${this.apiUrl}/qr/${eventId}`, { 
-        headers: this.getAuthHeaders(), 
-        responseType: 'blob' 
+      return this.http.get(`${this.apiUrl}/qr/${eventId}`, {
+        headers: this.getAuthHeaders(),
+        responseType: 'blob'
       }).pipe(
         map((blob: Blob) => URL.createObjectURL(blob))
       );
     }
-    
+
   getEventById(id:number): Observable<any> {
 
     return this.http.get<any>(this.apiUrl+"/"+id,{ headers: this.getAuthHeaders() });
@@ -67,5 +67,5 @@ export class EventService {
   updateEvent(eventId :number,event: Event): Observable<Event> {
     return this.http.put<Event>(`${this.apiUrl}/update-event/${eventId}`, event,{ headers: this.getAuthHeaders() }); // ✅ Correction
   }
- 
+
 }

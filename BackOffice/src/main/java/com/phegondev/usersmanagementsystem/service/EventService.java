@@ -16,10 +16,8 @@ import com.phegondev.usersmanagementsystem.repository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +31,6 @@ public class EventService implements IEventService {
     @Autowired
     ReservationRepository reservationRepository;
 
-    // 1️⃣ Ajouter un événement (Admin)
     public EventDTO addEvent(EventDTO eventDTO) {
         Event event = new Event();
         event.setTitle(eventDTO.getTitle());
@@ -54,8 +51,6 @@ public class EventService implements IEventService {
         event.setTitle(eventDTO.getTitle());
         event.setDescription(eventDTO.getDescription());
         event.setScheduledAt(eventDTO.getScheduledAt());
-        event.setCapacity(eventDTO.getCapacity());
-
         Event updatedEvent = eventRepository.save(event);
         return new EventDTO(updatedEvent.getEventId(), updatedEvent.getTitle(), updatedEvent.getDescription(),
                 updatedEvent.getScheduledAt(), updatedEvent.getCapacity(), updatedEvent.getReservedSeats());
@@ -67,13 +62,18 @@ public class EventService implements IEventService {
     }
 
     // 4️⃣ Voir les événements à venir (Étudiant)
-    public List<EventDTO> getUpcomingEvents() {
-        return eventRepository.findByScheduledAtAfter(LocalDateTime.now()).stream()
+    public List<Event> getUpcomingEvents() {
+        return eventRepository.findAll();
+    }
+
+    @Override
+    public List<EventDTO> getReservationsByUserId(Long userId) {
+        List<Event> reservedEvents = reservationRepository.findEventsByUserId(userId);
+        return reservedEvents.stream()
                 .map(event -> new EventDTO(event.getEventId(), event.getTitle(), event.getDescription(),
                         event.getScheduledAt(), event.getCapacity(), event.getReservedSeats()))
                 .collect(Collectors.toList());
     }
-
 
 
     public EventDTO getEventById(Long id) {
@@ -104,10 +104,6 @@ public class EventService implements IEventService {
             throw new RuntimeException("User ID is missing in the request!");
         }
 
-        if (reservationDTO.getUserId() == null) {
-            throw new RuntimeException("User ID is missing in the request!");
-        }
-
         OurUsers user = usersRepo.findById(reservationDTO.getUserId().intValue())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -119,13 +115,14 @@ public class EventService implements IEventService {
         Reservation reservation = new Reservation();
         reservation.setEvent(event);
         reservation.setUser(user);
-        reservation.setContactEmail(reservationDTO.getContactEmail());
+        reservation.setContactEmail(user.getEmail());
         reservation.setReservationDate(LocalDateTime.now());
 
         reservationRepository.save(reservation);
 
         return "Réservation effectuée avec succès !";
     }
+
     public byte[] generateReservationPDF(Long id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Réservation non trouvée"));
@@ -148,4 +145,5 @@ public class EventService implements IEventService {
             throw new RuntimeException("Erreur lors de la génération du PDF", e);
         }
 
-}}
+    }
+}

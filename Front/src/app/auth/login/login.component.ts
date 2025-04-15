@@ -67,7 +67,7 @@ export class LoginComponent {
             this.router.navigate(['/home-three']); // Change selon ta page modérateur
             break;
           default:
-            this.router.navigate(['/home-four']); // Page par défaut des utilisateurs normaux
+            this.router.navigate(['/student/student-dashboard']); // Page par défaut des utilisateurs normaux
             break;
         }
 

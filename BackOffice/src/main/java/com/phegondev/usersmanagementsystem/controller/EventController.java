@@ -42,7 +42,6 @@ public class EventController {
 
 
     @PreAuthorize("hasRole('ADMIN')") // Vérifie que l'utilisateur est admin
-    // 1️⃣ Ajouter un événement (Admin)
     @PostMapping("/admin/create-event")
     public ResponseEntity<EventDTO> addEvent(@RequestBody EventDTO eventDTO) {
         EventDTO createdEvent = eventService.addEvent(eventDTO);
@@ -85,7 +84,7 @@ public class EventController {
     // 4️⃣ Voir les événements à venir (Étudiant)
     @PreAuthorize("hasRole('ADMIN')") // Vérifie que l'utilisateur est admin
     @GetMapping("/admin/upcoming")
-    public List<EventDTO> getUpcomingEvents() {
+    public List<Event> getUpcomingEvents() {
         return eventService.getUpcomingEvents();
     }
 

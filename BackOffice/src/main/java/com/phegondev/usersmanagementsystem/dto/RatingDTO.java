@@ -9,7 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationDTO {
-    private Long eventId;
+public class RatingDTO {
     private Long userId;
+    private Long eventId;
+    private int stars;
+    private String comment;
 }

@@ -23,13 +23,13 @@ const routes: Routes = [
     path: '',
     component: StudentComponent,
     children: [
-       
+
       {
         path: 'students/reserve/:eventId',
         component: AfficheReservationComponent,
     },
       {
-        
+
         path: 'student-view',
         loadChildren: () =>
           import('./student-view/student-view.module').then(
@@ -44,9 +44,9 @@ const routes: Routes = [
         path: 'view-invoice',
         component: ViewInvoiceComponent,
       },
-     
+
       { path: 'student-dashboard', component: StudentDashboardComponent },
-      { path: 'student-qa', component:  EventListComponent},
+      { path: 'events-list', component:  EventListComponent},
       { path: 'student-quiz', component: StudentQuizComponent },
       { path: 'student-message', component: StudentMessageComponent },
       {

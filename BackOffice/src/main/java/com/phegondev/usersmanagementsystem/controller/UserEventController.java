@@ -8,6 +8,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.phegondev.usersmanagementsystem.dto.EventDTO;
 import com.phegondev.usersmanagementsystem.dto.ReservationDTO;
+import com.phegondev.usersmanagementsystem.entity.Event;
 import com.phegondev.usersmanagementsystem.service.EventService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/events/user")
@@ -32,7 +34,7 @@ public class UserEventController {
     @Autowired
     EventService eventService;
     @GetMapping("/upcoming")
-    public List<EventDTO> getUpcomingEvents() {
+    public List<Event> getUpcomingEvents() {
         return eventService.getUpcomingEvents();
     }
     @PreAuthorize("hasRole('USER')")
@@ -91,7 +93,22 @@ public class UserEventController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfBytes);
     }
+    @PostMapping("/add-reservation")
+    public ResponseEntity<?> addReservation(@RequestBody ReservationDTO reservationDTO) {
+        String message = eventService.reserveEvent(reservationDTO);
+        if (message.contains("complet")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                    Map.of("message", message)
+            );
+        }
+        return ResponseEntity.ok(Map.of("message", message));
+    }
 
+    @GetMapping("/my-reservations/{userId}")
+    public ResponseEntity<List<EventDTO>> getUserReservations(@PathVariable Long userId) {
+        List<EventDTO> userReservations = eventService.getReservationsByUserId(userId);
+        return ResponseEntity.ok(userReservations);
+    }
 }
 
 

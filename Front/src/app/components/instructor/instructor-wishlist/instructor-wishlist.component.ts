@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { EventService, Event } from 'src/app/shared/service/event.service';
-import { routes } from 'src/app/shared/service/routes/routes';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {EventService, Event} from 'src/app/shared/service/event.service';
+import {routes} from 'src/app/shared/service/routes/routes';
 
 @Component({
   selector: 'app-instructor-wishlist',
@@ -13,9 +13,13 @@ export class InstructorWishlistComponent {
   selectedEvent: Event | null = null;
   isEditing: boolean = false;
   public routes = routes;
+  minDateTime: any;
 
   constructor(private eventService: EventService, private router: Router
-  ) {}
+  ) {
+    const now = new Date();
+    this.minDateTime = now.toISOString().slice(0, 16);
+  }
 
   ngOnInit(): void {
     this.loadEvents();
@@ -27,8 +31,8 @@ export class InstructorWishlistComponent {
     });
   }
 
-  addEvent(title: string, description: string, scheduledAt: string,capacity: string) {
-    const newEvent: Event = { title, description, scheduledAt: new Date(scheduledAt),capacity: parseInt(capacity, 10) };
+  addEvent(title: string, description: string, scheduledAt: string, capacity: string) {
+    const newEvent: Event = {title, description, scheduledAt: new Date(scheduledAt), capacity: parseInt(capacity, 10)};
     this.eventService.addEvent(newEvent).subscribe(() => {
       this.loadEvents();
     });
@@ -42,33 +46,11 @@ export class InstructorWishlistComponent {
     }
   }
 
-  editEvent(event: Event) {
-    this.selectedEvent = { ...event }; // Clone l'événement sélectionné
-    this.isEditing = true;
-  }
-
- /*updateEvent() {
-    if (this.selectedEvent) {
-       //On met à jour l'événement avec les données modifiées
-      this.eventService.updateEvent(this.selectedEvent).subscribe(() => {
-        this.loadEvents();  // Recharge la liste des événements
-        this.isEditing = false;  // Ferme la modale
-        this.selectedEvent = null;  // Réinitialise la sélection
-      });
-   }
-  }
-*/
-update_Stage(eventId: number) {
-  this.router.navigate(['/instructor/updatevent', eventId]);
-}
-
-updateevent(id?: number) {
-  if (id && confirm("Voulez-vous vraiment modifier cet événement ?")) {
-    console.log(id);
-    this.update_Stage(id);
+  updateEvent(id?: number) {
+    if (id && confirm("Voulez-vous vraiment modifier cet événement ?")) {
+      this.router.navigate(['/instructor/updatevent', id]);
     }
   }
-
 
 
   cancelEdit() {

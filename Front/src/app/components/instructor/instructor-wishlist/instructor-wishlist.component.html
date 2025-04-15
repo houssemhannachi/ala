@@ -1,7 +1,7 @@
 <!-- Page Content -->
 <div class="page-content">
     <div class="container">
-        <div class="row">    
+        <div class="row">
             <!-- Sidebar -->
             <app-instructor-sidebar class="col-xl-3 col-lg-3 theiaStickySidebar"></app-instructor-sidebar>
             <!-- /Sidebar -->
@@ -19,7 +19,7 @@
                     <form (submit)="addEvent(eventTitle.value, eventDescription.value, eventDate.value, eventCapacity.value)">
                         <input type="text" #eventTitle placeholder="Titre de l'événement" required>
                         <input type="text" #eventDescription placeholder="Description" required>
-                        <input type="datetime-local" #eventDate required>
+                        <input type="datetime-local" #eventDate required [min]="minDateTime">
                         <input type="number" #eventCapacity placeholder="Capacité maximale" required> <!-- ✅ Capacité ajoutée -->
                         <button type="submit" class="btn btn-primary">Ajouter</button>
                     </form>
@@ -47,7 +47,7 @@
                                 <td>{{ event.scheduledAt | date: 'dd/MM/yyyy HH:mm' }}</td>
                                 <td>{{ event.capacity }}</td> <!-- ✅ Affichage de la capacité -->
                                 <td>
-                                    <button (click)="updateevent(event.eventId)" class="btn btn-primary">Modifier</button>
+                                    <button (click)="updateEvent(event.eventId)" class="btn btn-primary">Modifier</button>
                                     <button (click)="deleteEvent(event.eventId)" class="btn btn-danger">Supprimer</button>
                                 </td>
                             </tr>

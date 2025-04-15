@@ -34,7 +34,7 @@ export class AfficheReservationComponent  {
     } else {
         console.error("ID d'événement manquant dans l'URL !");
         alert("Erreur : ID d'événement manquant !");
-        this.router.navigate(['/student/student-qa']);  // 🔄 Redirection en cas d'erreur
+        this.router.navigate(['/student/events-list']);  // 🔄 Redirection en cas d'erreur
     }
 }
 
@@ -50,7 +50,7 @@ submitReservation(): void {
           next: (response) => {
               console.log("Réponse du serveur :", response);  // ✅ Debug
               alert('Réservation réussie !');
-              this.router.navigate(['/student/student-qa']);
+              this.router.navigate(['/student/events-list']);
           },
           error: (err) => {
               console.error("Erreur lors de la réservation :", err);  // ✅ Debug

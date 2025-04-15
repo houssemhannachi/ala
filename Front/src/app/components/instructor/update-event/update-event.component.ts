@@ -11,7 +11,6 @@ import { EventService, Event } from 'src/app/shared/service/event.service';
 })
 export class UpdateEventComponent{ // Initialiser l'événement à modifier
   eventId!:number;
-  eventToUpdate:any;
   event:any;
 
 constructor(
@@ -24,8 +23,6 @@ ngOnInit(): void {
   // Récupérer l'ID de l'événement depuis l'URL
    this.eventId = this.route.snapshot.params['id'];
     this.getEventById(this.eventId);
-    console.log(this.event.id);
-  
 }
 
 // Fonction pour récupérer l'événement à partir de son ID
@@ -52,12 +49,12 @@ updateEvent(): void {
         alert('Une erreur est survenue lors de la mise à jour.');
       }
     );
-  
+
 }
 
 // Fonction pour annuler la modification et revenir à la page des événements
 cancel(): void {
-  this.router.navigate(['/instructor-wishlist']);
+  this.router.navigate(['instructor/instructor-wishlist']);
 }
 
 }

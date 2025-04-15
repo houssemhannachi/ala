@@ -161,12 +161,10 @@ export class routes {
   }
 
       public static get EventList(): string {
-        return this.students +  'student-qa';
+        return this.students +  'events-list';
 
       }
-      public static get afficheReservation(): string {
-        return this.students + 'reserve';
-    }
+
   public static get students_grid(): string {
     return this.students + 'student-view/students-grid';
   }

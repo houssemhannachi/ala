@@ -4,6 +4,8 @@ import { DataService } from 'src/app/shared/service/data/data.service';
 import { SidebarService } from 'src/app/shared/service/sidebar/sidebar.service';
 import { routes } from 'src/app/shared/service/routes/routes';
 import { SidebarItem } from 'src/app/models/model';
+import {AuthService} from "../../shared/service/Auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -23,15 +25,21 @@ export class HeaderComponent {
   last = '';
   headerMenuactive = '';
   public showDark = false;
+  user: any = null;
 
   public white_bg = false;
+  public isLoggedIn: any;
 
   sidebar: SidebarItem[];
   constructor(
+    private router: Router,
+    private authService: AuthService,
     private common: CommonService,
     private data: DataService,
     private sidebarService: SidebarService
   ) {
+    this.loadUser();
+    this.isLoggedIn = this.authService.isUserLoggedIn();
     this.common.base.subscribe((res: string) => {
       this.base = res;
     });
@@ -89,8 +97,22 @@ export class HeaderComponent {
   public themeChange(): void {
     this.sidebarService.themeColor();
     this.applyTheme();
-  
+
   }
- 
- 
+  loadUser() {
+    this.authService.getProfile().subscribe({
+      next: (response) => {
+        this.user = response.ourUsers;
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+    });
+  }
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/home']).then(() => {
+      window.location.reload();
+    });
+  }
 }
