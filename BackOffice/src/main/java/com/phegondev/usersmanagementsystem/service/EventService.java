@@ -84,6 +84,8 @@ public class EventService implements IEventService {
             eventDTO.setEventId(event.get().getEventId());
             eventDTO.setTitle(event.get().getTitle());
             eventDTO.setDescription(event.get().getDescription());
+            eventDTO.setCapacity(event.get().getCapacity());
+            eventDTO.setReservedSeats(event.get().getReservedSeats());
             eventDTO.setScheduledAt(event.get().getScheduledAt());
             return eventDTO;
         } else {

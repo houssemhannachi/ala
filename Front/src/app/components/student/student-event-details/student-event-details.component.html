@@ -22,6 +22,9 @@
         <div class="mt-4">
           <h4>Reviews</h4>
           <p><strong>Total Reviews:</strong> {{ reviews.length }}</p>
+          <p *ngIf="mostActiveReviewer">
+            <strong>Most Active Reviewer:</strong> {{ mostActiveReviewer.name }} ({{ mostActiveReviewer.count }} reviews)
+          </p>
           <h6>⭐ {{ rate | number:'1.1-1' }}/5</h6>
           <div class="mt-3" *ngIf="reviews.length>0; else noReviews">
             <div *ngFor="let review of reviews; let i = index" class="mb-2">

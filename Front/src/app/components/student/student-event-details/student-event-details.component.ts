@@ -20,6 +20,7 @@ export class StudentEventDetailsComponent implements OnInit {
   reviews: Review[] = [];
   user: any;
   userId: any;
+  mostActiveReviewer: { name: string; count: number } | null = null;
 
   constructor(private authService: AuthService, private reviewService: ReviewService, private rateService: RatingService, private eventService: EventService, private route: ActivatedRoute) {
     this.eventId = Number(this.route.snapshot.paramMap.get('id'));
@@ -50,6 +51,7 @@ export class StudentEventDetailsComponent implements OnInit {
   getReviews() {
     this.reviewService.loadReviews(this.eventId).subscribe((data: Review[]) => {
       this.reviews = data;
+      this.findMostActiveReviewer(data);
     });
   }
 
@@ -84,4 +86,25 @@ export class StudentEventDetailsComponent implements OnInit {
       });
     }
   }
+  findMostActiveReviewer(reviews: Review[]) {
+    const reviewerCounts: { [username: string]: number } = {};
+
+    for (let r of reviews) {
+      const name = r.username || 'Anonymous';
+      reviewerCounts[name] = (reviewerCounts[name] || 0) + 1;
+    }
+
+    let maxName = '';
+    let maxCount = 0;
+
+    for (let [name, count] of Object.entries(reviewerCounts)) {
+      if (count > maxCount) {
+        maxName = name;
+        maxCount = count;
+      }
+    }
+
+    this.mostActiveReviewer = maxCount ? { name: maxName, count: maxCount } : null;
+  }
+
 }
